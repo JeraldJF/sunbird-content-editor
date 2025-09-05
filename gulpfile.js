@@ -355,7 +355,6 @@ gulp.task('zipDev', ['minifyDev', 'injectDev'], function () {
 gulp.task('buildDev', ['minifyDev', 'injectDev', 'zipDev', "cachebust"]);
 
 var corePlugins = [
-    "org.ekstep.colorpicker-1.0",
     "org.ekstep.config-1.0",
     "org.ekstep.readalongbrowser-1.0",
     "org.ekstep.assetbrowser-1.4"
