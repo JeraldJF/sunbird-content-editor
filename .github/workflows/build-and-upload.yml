@@ -1,8 +1,9 @@
 name: Build and Upload Content Editor
 
 on:
-  pull_request:
-    branches: [ "main", "master", "workflow" ] # This will trigger the workflow on PRs to these branches
+  push:
+    branches:
+      - '**'
 
 jobs:
   build-and-upload:
