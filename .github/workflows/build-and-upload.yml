@@ -1,0 +1,62 @@
+name: Build and Upload Content Editor
+
+on:
+  pull_request:
+    branches: [ "main", "master", "workflow" ] # This will trigger the workflow on PRs to these branches
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 10.24.1
+      CHROME_BIN: google-chrome
+      editorType: contentEditor
+      framework_version_number: ${{ github.ref_name }}
+      editor_version_number: ${{ github.ref_name }}
+      build_number: ${{ github.sha }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libpng-dev google-chrome-stable
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package.json') }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install global npm tools
+        run: npm install -g bower@1.8.14 gulp@3.9.1
+
+      - name: Clean npm cache and install dependencies
+        run: |
+          npm cache clean --force
+          npm install
+
+      - name: Install bower dependencies
+        working-directory: app
+        run: |
+          bower cache clean --allow-root
+          bower prune -f --allow-root
+          bower install --force -V --allow-root
+
+      - name: Build main project
+        run: |
+          npm install gulp-gzip --save-dev
+          npm run build-npm-pkg
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: content-editor-build
+          path: content-editor
