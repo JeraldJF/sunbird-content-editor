@@ -51,6 +51,10 @@ jobs:
           bower prune -f --allow-root
           bower install --force -V --allow-root
 
+      - name: Clone content plugins
+        run: |
+          git clone -b release-8.0.0 https://github.com/project-sunbird/sunbird-content-plugins.git ./plugins
+
       - name: Build main project
         run: |
           npm install gulp-gzip --save-dev
