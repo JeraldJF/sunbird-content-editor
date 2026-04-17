@@ -439,7 +439,7 @@ gulp.task('packageCorePlugins', ["minifyFramework", "minifyBaseEditor", "minifyC
 });
 
 gulp.task("clone-plugins", function (done) {
-    git.clone('https://github.com/project-sunbird/sunbird-content-plugins.git', { args: '-b ' + branchName + ' ./plugins' }, function (err) {
+    git.clone('https://github.com/JeraldJF/sunbird-content-plugins.git', { args: '-b ' + branchName + ' ./plugins' }, function (err) {
         if (err) {
             done(err);
         }

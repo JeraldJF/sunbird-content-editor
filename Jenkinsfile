@@ -14,7 +14,7 @@ node() {
                 commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 branch_name = params.github_release_tag.split('/')[-1]
                 artifact_version = branch_name + '_' + commit_hash
-                sh "git clone https://github.com/project-sunbird/sunbird-content-plugins.git plugins -b ${branch_name}"
+                sh "git clone https://github.com/JeraldJF/sunbird-content-plugins.git plugins -b ${branch_name}"
                 echo "artifact_version: " + artifact_version
                 stage('Build') {
                     sh('chmod 777 build.sh')

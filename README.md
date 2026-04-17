@@ -1,7 +1,7 @@
 # Content Editor
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9858d61b7adf494a9e30afedb7c06739)](https://app.codacy.com/app/sunbird-bot/sunbird-content-editor?utm_source=github.com&utm_medium=referral&utm_content=project-sunbird/sunbird-content-editor&utm_campaign=Badge_Grade_Settings)
-[![Build Status](https://travis-ci.org/project-sunbird/sunbird-content-editor.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-content-editor)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9858d61b7adf494a9e30afedb7c06739)](https://app.codacy.com/app/sunbird-bot/sunbird-content-editor?utm_source=github.com&utm_medium=referral&utm_content=JeraldJF/sunbird-content-editor&utm_campaign=Badge_Grade_Settings)
+[![Build Status](https://travis-ci.org/JeraldJF/sunbird-content-editor.svg?branch=master)](https://travis-ci.org/JeraldJF/sunbird-content-editor)
 [![npm version](https://badge.fury.io/js/%40project-sunbird%2Fcontent-editor.svg)](https://badge.fury.io/js/%40project-sunbird%2Fcontent-editor)
 
 ## Introduction
@@ -96,7 +96,7 @@ window.config = {
 | `plugins ` | An array for the plugins | array | NA | ex:`[{id:"org.sunbird.header",ver:"1.0",type:"plugin"}]`|
 | `previewURL ` | The path of the content player previewer | string | NA |
 | `showHelp ` | Used to show the help icon in the editor | boolean|false |
-| `previewConfig ` | The configurations related to the content player preview. For details, refer [here](https://github.com/project-sunbird/sunbird-content-player) | string | false |
+| `previewConfig ` | The configurations related to the content player preview. For details, refer [here](https://github.com/JeraldJF/sunbird-content-player) | string | false |
 | `enableTelemetryValidation ` | Used to validate the telemetry events that are generated in the editors | boolean| false |
 | `aws_s3_urls ` | If any content asset refers to any aws s3 url, configure the URLs here. The editor replaces those paths with `baseURL + assetReverseProxyUrl` |array| NA |"https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/" | 
 | `cloudStorage` |  It is `object` and which defines cloud storage configuration which contains provider & presigned_headers for diff service provider for example: Azure, AWS | object | ``` cloudStorage: { provider: azure, presigned_headers: { 'x-ms-blob-type': 'BlockBlob' // This header is specific to azure storage provider. } } ``` | The default configuration can be overwrite by passing empty headers. ***For example:*** If you don't want to pass any headers for AWS than pass as empty headers as below: ``` cloudStorage: { provider: '', presigned_headers: { } } ```
@@ -129,14 +129,14 @@ window.config = {
 
 # How to Setup Sunbird Content Editor in your Local Machine
 
-1. Clone the sunbird-content-editor repo from [here](https://github.com/project-sunbird/sunbird-content-editor)
-2. Clone the sunbird-content-plugins repo from [here](https://github.com/project-sunbird/sunbird-content-plugins) 
+1. Clone the sunbird-content-editor repo from [here](https://github.com/JeraldJF/sunbird-content-editor)
+2. Clone the sunbird-content-plugins repo from [here](https://github.com/JeraldJF/sunbird-content-plugins) 
 3. Go to the root directory sunbird-content-editor.
 4. Run `npm install` to install node modules.
 3. `cd app` and run `bower install` to install bower components
 5. Create a symlink to 'sunbird-content-plugins' (`ln -s ../sunbird-content-plugins plugins`)(Linux, mac)
 for windows: use `mklink`
-6. Configure the content editor [here](https://github.com/project-sunbird/sunbird-content-editor#how-to-configure-the-sunbird-content-editor)
+6. Configure the content editor [here](https://github.com/JeraldJF/sunbird-content-editor#how-to-configure-the-sunbird-content-editor)
 7. Run `node app`
 8. Open Chrome and visit this link: http://localhost:3000/app?contentId={{content_id}}  
 *content_id*: Live/Draft content id created on Sunbird portal
@@ -152,13 +152,13 @@ sample link: http://localhost:3000/app?contentId=do_1124674880571
 *Sunbird API Reference*: http://docs.sunbird.org/latest/apis/
 
 ## ChangeLogs
-For changes logs,refer [here](https://github.com/project-sunbird/sunbird-content-editor/releases) 
+For changes logs,refer [here](https://github.com/JeraldJF/sunbird-content-editor/releases) 
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/project-sunbird/sunbird-content-editor/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/JeraldJF/sunbird-content-editor/blob/master/LICENSE) file for details
 
 ## Versioning
-We use [SemVer](https://semver.org/) for versioning. For the versions available, see the [tags](https://github.com/project-sunbird/sunbird-content-editor/tags) on this repository.
+We use [SemVer](https://semver.org/) for versioning. For the versions available, see the [tags](https://github.com/JeraldJF/sunbird-content-editor/tags) on this repository.
 
 ## Any Issues?
 We have an open and active [issue tracker](https://project-sunbird.atlassian.net/issues/). Please report any issues.
