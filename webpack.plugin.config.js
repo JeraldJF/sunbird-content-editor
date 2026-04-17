@@ -157,7 +157,12 @@ module.exports = {
 		{
 			test: /\.(html)$/,
 			use: {
-				loader: 'html-loader'
+				loader: 'html-loader',
+				options: {
+					sources: false,
+					esModule: false,
+					preprocessor: (content, loaderContext) => content
+				}
 			}
 		},
 		{
