@@ -48,7 +48,8 @@ jobs:
       - name: Clean npm cache and install dependencies
         run: |
           npm cache clean --force
-          npm install
+          rm -f package-lock.json
+          npm install --legacy-peer-deps
 
       - name: Install bower dependencies
         working-directory: app

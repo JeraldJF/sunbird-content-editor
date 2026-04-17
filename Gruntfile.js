@@ -126,7 +126,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-contrib-rename');
+    grunt.loadNpmTasks('grunt-rename-util');
     grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
