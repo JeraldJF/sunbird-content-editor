@@ -199,7 +199,7 @@
     "package-core-plugins": "gulp packageCorePlugins",
     "build": "webpack",
     "build-plugins": "webpack --config webpack.plugin.config.js",
-    "build-editor": "webpack --env.channel=NPM_PACKAGE",
+    "build-editor": "webpack --env channel=NPM_PACKAGE",
     "apptest": "karma start karmaconf.js",
     "testpluginframework": "karma start karmaconf.pluginframework.js",
     "build-npm-pkg": "gulp packageCorePlugins && npm run build-plugins && npm run build-editor && cd content-editor && gulp minifyJs && gulp copystyleImages && gulp clean && gulp injectrenamedfiles",
