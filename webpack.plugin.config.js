@@ -121,6 +121,7 @@ function getVendorCSS () {
 
 module.exports = {
 
+	mode: 'production',
 	entry: getEntryFiles(),
 
 	output: {
@@ -161,6 +162,7 @@ module.exports = {
 				options: {
 					sources: false,
 					esModule: false,
+					minimize: false,
 					preprocessor: (content, loaderContext) => content
 				}
 			}

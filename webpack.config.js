@@ -273,6 +273,7 @@ module.exports = (env, argv) => {
                         options: {
                             sources: false,
                             esModule: false,
+                            minimize: false,
                             preprocessor: (content, loaderContext) => content
                         }
                     }
