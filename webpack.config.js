@@ -327,6 +327,14 @@ module.exports = (env, argv) => {
                     {
                         from: './deploy/package.json',
                         to: './'
+                    },
+                    {
+                        from: './app/bower_components/jquery/dist/jquery.min.js',
+                        to: 'scripts/jquery.min.js'
+                    },
+                    {
+                        from: './app/bower_components/semantic/dist/semantic.min.js',
+                        to: 'scripts/semantic.min.js'
                     }
                 ]
             }),
