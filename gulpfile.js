@@ -133,10 +133,25 @@ var pluginFramework = [
     "app/scripts/framework/service/lock-service.js",
     "app/scripts/framework/service/user-service.js",
     "app/scripts/framework/repo/irepo.js",
-    "app/scripts/framework/repo/published-repo.js",
-    "app/scripts/framework/repo/draft-repo.js",
-    "app/scripts/framework/repo/host-repo.js"
+    "app/scripts/framework/repo/published-repo.js"
 ];
+
+gulp.task('setup', function (done) {
+    gulp.src('semantic/dist', {
+        read: false
+    }).pipe(clean())
+    gulp.src(['app/config/theme.config']).pipe(gulp.dest('semantic/src/'))
+    gulp.src(['app/config/site.variables']).pipe(gulp.dest('semantic/src/site/globals/'))
+    gulp.src('semantic/gulpfile.js')
+        .pipe(chug({
+            tasks: ['build']
+        }, function () {
+            gulp.src(['semantic/dist/semantic.min.css']).pipe(gulp.dest('app/styles/'));
+            gulp.src(['semantic/dist/themes/**/*']).pipe(gulp.dest('app/styles/themes'));
+            gulp.src(['semantic/dist/semantic.min.js']).pipe(gulp.dest('app/libs/'));
+        }))
+    done();
+});
 
 var appScripts = pluginFramework.concat(editorFramework).concat(contentEditorApp);
 var editorScripts = pluginFramework.concat(editorFramework);
@@ -185,6 +200,13 @@ gulp.task('minifyFramework', function () {
         .pipe(gulp.dest('content-editor/scripts'));
 });
 
+gulp.task('dist', function () {
+    var cesrc = gulp.src(appScripts).pipe(concat('script.min.js')).pipe(gulp.dest('dist/'));
+    var celibs = gulp.src(bower_components).pipe(concat('external.min.js')).pipe(gulp.dest('dist/'));
+    var pluginframework = gulp.src(pluginFramework).pipe(concat('plugin-framework.min.js')).pipe(gulp.dest('dist/'));
+    return merge(cesrc, celibs, pluginframework);
+});
+
 gulp.task('minifyCSS', function () {
     return gulp.src([
         'app/styles/semantic.min.css',
@@ -205,7 +227,8 @@ gulp.task('minifyCSS', function () {
         'app/styles/fonts/notosans-kannada/notosanskannada.css',
         'app/styles/fonts/notosans-oriya/notosansoriya.css',
         'app/styles/fonts/noto-nastaliqurdu/notonastaliqurdu.css',
-        'app/styles/fonts-override.css'
+        'app/styles/fonts-override.css',
+        'app/styles/sunbird-spark-theme.css'
     ])
         .pipe(concat('style.min.css'))
         .pipe(minify({
@@ -266,6 +289,90 @@ gulp.task('copydeploydependencies', function () {
     return gulp.src(['deploy/gulpfile.js', 'deploy/package.json'], { base: '' })
         .pipe(gulp.dest('content-editor'));
 });
+
+gulp.task('minify', gulp.parallel(
+    'minifyallJS', 'minifyBaseEditor', 'minifyCSS', 'minifyJsBower',
+    'minifyFramework', 'minifyCssBower', 'copyfonts', 'copycommonfonts',
+    'copyfontawesomefonts', 'copyFiles', 'copydeploydependencies'
+));
+
+gulp.task('inject', gulp.series('minify', function injectTask() {
+    var target = gulp.src('content-editor/index.html');
+    var sources = gulp.src(['content-editor/scripts/*.js', '!content-editor/scripts/base-editor*.js', '!content-editor/scripts/plugin-framework.*.js', '!content-editor/scripts/coreplugins.js', 'content-editor/styles/*.css'], {
+        read: false
+    });
+    return target
+        .pipe(inject(sources, {
+            ignorePath: 'content-editor/',
+            addRootSlash: false
+        }))
+        .pipe(gulp.dest('./content-editor'));
+}));
+
+gulp.task('replace', gulp.series('inject', function replaceTask() {
+    return mergeStream([
+        gulp.src(["content-editor/styles/external.*.css"]).pipe(replace('../fonts', 'fonts')).pipe(gulp.dest('content-editor/styles')),
+        gulp.src(["content-editor/scripts/script.*.js"]).pipe(replace('/plugins', '/content-plugins')).pipe(replace("https://dev.ekstep.in", "")).pipe(replace('dispatcher: "local"', 'dispatcher: "console"')).pipe(gulp.dest('content-editor/scripts/'))
+    ]);
+}));
+
+gulp.task('build', gulp.series('minify', 'inject', function buildTask() {
+    return gulp.src('content-editor/**')
+        .pipe(zip('content-editor.zip'))
+        .pipe(gulp.dest(''));
+}));
+
+//Minification for dev Start
+gulp.task('copyFilesDev', function () {
+    return gulp.src(['app/scripts/**', 'app/templates/**/*', 'app/images/content-logo.png', 'app/images/geniecontrols.png',
+        'app/config/*.json', 'app/config/*.js', 'app/index.html'
+    ], {
+        base: 'app/'
+    })
+        .pipe(gulp.dest('content-editor'));
+});
+
+gulp.task('minifyDev', gulp.parallel(
+    'minifyCSS', 'minifyJsBower', 'minifyCssBower', 'copyfonts',
+    'copyfontawesomefonts', 'copyFilesDev'
+));
+
+gulp.task('injectDev', gulp.series('minifyDev', function injectDevTask() {
+    var target = gulp.src('content-editor/index.html');
+    var sources = gulp.src(['content-editor/scripts/external.min.js', 'content-editor/scripts/main/class.js', 'content-editor/scripts/main/ekstep-editor.js', 'content-editor/scripts/main/base-plugin.js',
+        'content-editor/scripts/manager/event-manager.js', 'content-editor/scripts/manager/plugin-manager.js', 'content-editor/scripts/manager/stage-manager.js', 'content-editor/scripts/manager/toolbar-manager.js',
+        'content-editor/scripts/manager/media-manager.js', "app/scripts/contenteditor/manager/header-manager.js", "app/scripts/contenteditor/manager/sidebar-manager.js", 'content-editor/scripts/main/ekstep-editor-api.js', 'content-editor/scripts/migration/1_migration-task.js', 'content-editor/scripts/migration/stageordermigration-task.js',
+        'content-editor/scripts/migration/basestagemigration-task.js', 'content-editor/scripts/migration/imagemigration-task.js', 'content-editor/scripts/migration/scribblemigration-task.js', 'content-editor/scripts/service/iservice.js',
+        'content-editor/scripts/service/content-serice.js', 'content-editor/scripts/service/popup-service.js', 'content-editor/scripts/angular/controller/main.js', 'content-editor/scripts/angular/controller/popup-controller.js',
+        'content-editor/scripts/angular/directive/draggable-directive.js', 'content-editor/scripts/angular/directive/droppable-directive.js', 'content-editor/scripts/service/assessment-service.js', 'content-editor/scripts/service/asset-service.js',
+        'content-editor/scripts/service/concept-service.js', 'content-editor/styles/*.css'
+    ], {
+        read: false
+    });
+    return target.pipe(inject(sources, {
+        ignorePath: 'content-editor/',
+        addRootSlash: false
+    }))
+        .pipe(gulp.dest('./content-editor'));
+}));
+
+gulp.task('zipDev', gulp.series(
+    gulp.parallel('minifyDev', 'injectDev'),
+    function zipDevTask() {
+        return gulp.src('content-editor/**')
+            .pipe(zip('content-editor.zip'))
+            .pipe(gulp.dest(''));
+    }
+));
+
+gulp.task('buildDev', gulp.series('minifyDev', 'injectDev', 'zipDev'));
+
+var corePlugins = [
+    "org.ekstep.colorpicker-1.0",
+    "org.ekstep.config-1.0",
+    "org.ekstep.readalongbrowser-1.0",
+    "org.ekstep.assetbrowser-1.4"
+];
 
 gulp.task('minifyCorePlugins', function () {
     var tasks = corePlugins.map(function (plugin) {

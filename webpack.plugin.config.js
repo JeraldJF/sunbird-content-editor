@@ -45,7 +45,7 @@ var corePlugins = [
 
 let entryFiles = []
 
-function getEntryFiles () {
+function getEntryFiles() {
 	entryFiles = [{
 		entryFiles: packagePlugins(),
 		outputName: 'coreplugins.js'
@@ -58,7 +58,7 @@ function getEntryFiles () {
 	return entryPlus(entryFiles)
 }
 
-function packagePlugins () {
+function packagePlugins() {
 	var pluginPackageArr = [] // Default coreplugin
 	pluginPackageArr.push('./content-editor/scripts/coreplugins.js')
 	corePlugins.forEach(function (plugin) {
@@ -104,7 +104,7 @@ function packagePlugins () {
 	return pluginPackageArr
 }
 
-function getVendorCSS () {
+function getVendorCSS() {
 	var cssDependencies = []
 	corePlugins.forEach(function (plugin) {
 		var manifest = JSON.parse(fs.readFileSync('plugins/' + plugin + '/manifest.json'))
@@ -165,7 +165,8 @@ module.exports = {
 					minimize: false,
 					preprocessor: (content, loaderContext) => content
 				}
-			}
+			},
+			type: 'asset/source'
 		},
 		{
 			test: /\.(s*)css$/,
