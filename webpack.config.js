@@ -127,7 +127,8 @@ const APP_STYLE = [
     './app/styles/fonts/notosans-kannada/notosanskannada.css',
     './app/styles/fonts/notosans-oriya/notosansoriya.css',
     './app/styles/fonts/noto-nastaliqurdu/notonastaliqurdu.css',
-    './app/styles/fonts-override.css'
+    './app/styles/fonts-override.css',
+    './app/styles/sunbird-spark-theme.css'
 ];
 
 // removing the duplicate files
